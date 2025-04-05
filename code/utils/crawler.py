@@ -115,7 +115,7 @@ class Crawl:
 
 # 使用示例
 def main():
-    url = "https://www.m5mm.com/"
+    url = "https://www.bing.com/"
     crawler = Crawl()
     respon = crawler.get(url)
     print(respon.text)
