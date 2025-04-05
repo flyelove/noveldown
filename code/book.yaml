@@ -1,0 +1,52 @@
+- {书名: '//div[@id=''bookdetail'']/div[@id=''info'']/h1/text()', 作者: '//div[@id=''info'']/p[1]/a/text()',
+  地址: 'https://www.bixiabook6.com', 搜索: 'https://www.bixiabook6.com/search.php?keyword={key}',
+  目录: '//dt[contains(text(), ''正文'')]/following-sibling::dd/a', 站名: 笔下小说, 章节内容: '//div[@id=''content'']/text()',
+  简介: '//div[@id=''intro'']/text()'}
+- {书名: '//div[@id=''info'']/h1/text()', 作者: '//div[@id=''info'']/p[1]/text()', 地址: 'https://www.douyinxs.com',
+  目录: '//dt[contains(text(), ''正文'')]/following-sibling::dd/a', 站名: 抖音小说, 章节内容: '//div[@id=''content'']/text()',
+  简介: '//div[@id=''intro'']/text()'}
+- {书名: '//div[@class=''d_title'']/h1/text()', 作者: '//div[@class=''d_title'']/span/text()',
+  地址: 'https://www.uuks5.com', 目录: '//li[@class=''lazyrender'']/a', 站名: UU看书, 章节内容: '//div[@id=''TextContent'']/p/text()',
+  简介: '//div[@id=''bookintro'']/p/text()'}
+- {书名: '//div[@id=''info'']/h1/text()', 作者: '//div[@id=''info'']/p[1]/text()', 地址: 'https://www.biqige.info',
+  目录: '//dt[contains(text(), ''正文'')]/following-sibling::dd/a', 站名: 笔趣阁, 章节内容: '//div[@id=''content'']//text()',
+  简介: '//div[@id=''intro'']/p/text()', 编码: gbk}
+- {书名: '//div[@id=''info'']/h1/text()', 作者: '//div[@id=''info'']/p[1]/text()', 地址: 'https://www.beqege.cc',
+  目录: '//dt[contains(text(), ''正文'')]/following-sibling::dd/a', 站名: 笔趣阁, 章节内容: '//div[@id=''content'']/p/text()',
+  简介: '//div[@id=''intro'']/p[1]/text()'}
+- 书名: //div[@class='m-infos']/h1/text()
+  作者: //div[@class='m-infos']/p[1]/text()
+  地址: https://www.shuao.org
+  目录: //div[@id='play_0']/ul/li/a
+  站名: 盗墓小说网
+  章节内容:
+  - //div[@id='content']/p/text()
+  - [2, null]
+  简介: //div[@class='m-book_info']/p[1]/text()
+- 站名: uu看书网
+  地址: https://www.uuks.org
+  书名: //div[@class='jieshao_content']/h1/a/text()
+  封面:
+  - //a[@class='bookImg']/img
+  - src
+  作者: 
+  - //div[@class='jieshao_content']/h2/text()
+  - [3, null]
+  简介:
+  - //div[@class='jieshao_content']/h3/text()
+  - [3, null]
+  目录: //div[@class='box_con']/li/a
+  章节内容:
+  - //div[@id='contentbox']/p/text()
+  - [1, null]
+- 书名: //div[@class='itemtxt']/h1/a/text()
+  作者: 
+  - //div[@class='itemtxt']/p[2]/a/text()
+  - [3, null]
+  地址: https://www.sudugu.com
+  目录: //div[@id='list']/ul/li/a
+  站名: 速读网
+  章节内容:
+  - //div[@class='con']/p/text()
+  - [2, null]
+  简介: //div[@class='des bb']/p/text()
