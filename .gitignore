@@ -1,0 +1,13 @@
+*.pyc
+__pycache__/
+venv/
+.DS_Store
+.env
+*~
+*.swp
+tmp
+*.log
+*test.py
+*.dat
+tmp
+tests

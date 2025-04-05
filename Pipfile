@@ -1,0 +1,22 @@
+[packages]
+loguru = "*"
+retrying = "*"
+brotli = "*"
+requests = "*"
+bs4 = "*"
+apscheduler = "*"
+pymongo = "*"
+fake-headers = "*"
+lxml = "*"
+arrow = "*"
+ipython = "*"
+scrape-bing = "*"
+
+[dev-packages]
+ipykernel = "*"
+isort = "*"
+yapf = "*"
+flake8 = "*"
+
+[requires]
+python_version = "3.13"
