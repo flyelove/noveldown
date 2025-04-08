@@ -44,6 +44,9 @@
   - //div[@class='itemtxt']/p[2]/a/text()
   - [3, null]
   地址: https://www.sudugu.com
+  封面: 
+  - //div[@class='item']/a/img
+  - src
   目录: //div[@id='list']/ul/li/a
   站名: 速读网
   章节内容:

@@ -22,13 +22,14 @@ class SearchResult:
 
 class Book:
 
-    def __init__(self, 书名="", 作者="", 简介="", 章节=None):
+    def __init__(self, 书名="", 作者="", 简介="", 章节=None, 封面=None):
         self.书名 = 书名
         self.作者 = 作者
         self.简介 = 简介
         if 章节 is None:
             章节 = []
         self.章节 = 章节
+        self.封面 = 封面
 
     def __repr__(self):
         return 'Book({0.书名!r}, {0.作者!r})'.format(self)
@@ -91,7 +92,10 @@ class BookCrawler:
         或者， xpath路径, 属性名(str)
         或者， xpath路径, 属性名, 切片/索引
         '''
-        rule = self.now_rule[nkey]
+        rule = self.now_rule.get(nkey, None)
+        if rule is None:
+            logger.info(f"未能找到{nkey}的相关规则，")
+            return None
         logger.debug(f"{nkey}={rule}")
         if not isinstance(rule, str):
             rule, *value = rule
@@ -155,14 +159,13 @@ class BookCrawler:
         bk["书名"] = self.get_dat(root, "书名")
         # bk["作者"] = root.xpath(self.now_rule["作者"])[0]
         bk["作者"] = self.get_dat(root, "作者")
-        if ":" in bk["作者"]:
-            bk["作者"] = bk["作者"].split(":")[-1]
-        elif "：" in bk['作者']:
-            bk["作者"] = bk["作者"].split("：")[-1]
+        cover_url = urljoin(url, self.get_dat(root, "封面"))
+        if cover_url:
+            bk['封面'] = cover_url
         # bk["简介"] = root.xpath(self.now_rule["简介"])[0]
         bk["简介"] = self.get_dat(root, "简介")
         # bk["标签"]=root.xpath(self.now_rule["xpath"]["标签"])
-        mulu_url = self.now_rule.get("目录页", None)
+        mulu_url = self.get_dat(root, "目录页")
         if not mulu_url:
             mulu_url = url
         bk["章节"] = [
@@ -224,6 +227,7 @@ class BookCrawler:
         import time
         urls = [x.url for x in book.章节]
         nnn = len(urls)
+        need_update = [x.url for x in book.章节 if not x.content]
         logger.info("即将读取章节内容，"
                     f"共有{nnn}个章节需要读取")
         start_time = time.time()
@@ -233,7 +237,7 @@ class BookCrawler:
                     self.zhangjie_data,
                     url,
                 ): url
-                for url in urls
+                for url in need_update
             }
             for future in as_completed(future_to_url):
                 url = future_to_url[future]
@@ -249,12 +253,16 @@ class BookCrawler:
 
         us_time = time.time() - start_time
         ok_zj = [x for x in book.章节 if x.content]
+        if len(ok_zj) < nnn:
+            n = nnn - len(ok_zj)
+            logger.info(f"有{n}个章节读取失败，即将重新读取")
+            book = self.zhangjie_update(book)
         per_time = us_time / nnn
         logger.info(f"章节读取完毕，{len(ok_zj)}/{nnn}，"
                     f"平均用时{per_time}")
         return book
 
-    def save_book(self, book, save_dir="./book"):
+    def save_book(self, book, save_dir="./books"):
         """
         保存book到文本文件
         book: 字典
@@ -263,11 +271,18 @@ class BookCrawler:
         from pathlib import Path
         import pickle
         save_dir = Path(save_dir)
-        if not save_dir.is_dir():
-            raise ValueError(f"{save_dir}不是目录")
         if not save_dir.exists():
             save_dir.mkdir(parents=True, exist_ok=True)
+        elif not save_dir.is_dir():
+            raise ValueError(f"{save_dir}不是目录")
         tmp = book.书名 + "_" + book.作者
+        if book.封面:
+            cover_file = save_dir.joinpath(tmp + ".jpg")
+            cover_dat = self.crawler.get(book.封面)
+            if cover_dat:
+                with open(cover_file, "wb") as h_file:
+                    h_file.write(cover_dat.content)
+                logger.info(f"封面已保存到{cover_file}")
         bfile = save_dir.joinpath(tmp + ".txt")
         dfile = save_dir.joinpath(tmp + ".dat")
         logger.info(f"book将被保存到{bfile}(文本), {dfile}")

@@ -11,6 +11,8 @@ lxml = "*"
 arrow = "*"
 ipython = "*"
 scrape-bing = "*"
+fake-useragent = "*"
+"ruamel.yaml" = "*"
 
 [dev-packages]
 ipykernel = "*"
